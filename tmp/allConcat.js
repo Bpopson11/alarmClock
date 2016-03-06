@@ -17,7 +17,7 @@ $(document).ready(function(){
 exports.pingPong = function(goal) {
   var output = [];
   for (var i = 1; i <= goal; i++) {
-    if (i % 15 == 0) {
+    if (i % 15 === 0) {
       output.push("ping-pong");
     } else if (i % 2 === 0) {
       output.push("ping");
@@ -28,7 +28,7 @@ exports.pingPong = function(goal) {
     }
   }
   return output;
-}
+};
 
 $(document).ready(function(){
   $('#form').submit(function(event){

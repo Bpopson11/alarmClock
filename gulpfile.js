@@ -1,11 +1,20 @@
 var gulp = require('gulp');
 var browserify = require('browserify');
-var source = require('vinyl-source-stream');
 var concat = require('gulp-concat');
+var jshint = require('gulp-jshint');
+var source = require('vinyl-source-stream');
 var uglify = require('gulp-uglify');
 var utilities = require('gulp-util');
+var del = require('del');
 
 var buildProduction = utilities.env.production;
+
+// linter
+gulp.task('jshint', function(){
+  return gulp.src(['js/*.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
 
 // examaple gulp task
 gulp.task('myTask', function() {
@@ -39,7 +48,11 @@ gulp.task('minifyScripts', ['jsBrowserify'] , function() {
     .pipe(gulp.dest('./build/js'));
 });
 
-gulp.task('build', function() {
+gulp.task('clean', function(){
+  return del(['build', 'tmp']);
+});
+
+gulp.task('build', ['clean'] , function() {
   if (buildProduction) {
     gulp.start('minifyScripts');
   } else {
