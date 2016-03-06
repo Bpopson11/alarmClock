@@ -23,7 +23,7 @@ gulp.task('default', function() {
 
 // concat practice, concat interface
 gulp.task('concatInterface', function() {
-  return gulp.src(['./js/browser.js' , './js/signup-interface.js'])
+  return gulp.src(['./js/*.js'])
   .pipe(concat('allConcat.js'))
   .pipe(gulp.dest('./tmp'));
 });
