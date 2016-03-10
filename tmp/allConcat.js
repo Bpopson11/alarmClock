@@ -5,9 +5,9 @@ $(document).ready(function(){
     event.preventDefault();
 
     var goal = $('#goal').val();
-    var output = pingPong(goal);
-    output.forEach(function(element){
-      $('#solution').append("<li>" + element + "</li>");
+    var result = pingPong(goal);
+    result.forEach(function(element){
+      $('#solution').append("<li>" + element + " this is an edit</li>");
     });
 
 
@@ -28,7 +28,7 @@ exports.pingPong = function(goal) {
     }
   }
   return output;
-};
+}:
 
 $(document).ready(function(){
   $('#form').submit(function(event){
