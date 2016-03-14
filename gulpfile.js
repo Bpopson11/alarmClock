@@ -1,14 +1,14 @@
 // Include gulp
 var gulp = require('gulp');
 
-// Plugins used by gulp
+// Plugins for gulp
 var browserify = require('browserify');
-var del = require('del');
 var concat = require('gulp-concat');
 var jshint = require('gulp-jshint');
+var source = require('vinyl-source-stream');
 var uglify = require('gulp-uglify');
 var utilities = require('gulp-util');
-var source = require('vinyl-source-stream');
+var del = require('del');
 
 // Set build env from command line
 var buildProduction = utilities.env.production;
