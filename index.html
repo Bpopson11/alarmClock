@@ -4,6 +4,9 @@
     <link rel="stylesheet" href="build/css/vendor.css">
     <link rel="stylesheet" href="css/styles.css">
     <script src="build/js/vendor.min.js"></script>
+    <!-- the api below is from google to determine location via IP address -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
     <script type="text/javascript" src="build/js/app.js"></script>
     <title>Alarm Clock</title>
   </head>
@@ -32,9 +35,11 @@
           </div>
         </div>
         <div class="col-sm-6">
-          <h3>Well, look at the weather! </h3>
+          <h3>Now, look at the weather! </h3>
           <div class="well">
             <h2>Weather App</h2>
+            <p id="weather"></p>
+            <p id="temperature"></p>
           </div>
         </div>
       </div>
