@@ -1,9 +1,9 @@
 body {
-  background-color: #ddddee;
+  background-color: #5687bb;
 }
 
 .well {
-  background-color: #BFBFE6;
+  background-color: #d5e7fb;
 }
 
 h3 {
@@ -11,5 +11,9 @@ h3 {
 }
 
 .alarming {
-  background-color: #D88F8F;
+  background-color: #b85712;
+}
+
+.alarming_well{
+  background-color: #f0ae36;
 }

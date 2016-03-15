@@ -41,9 +41,11 @@ $(document).ready(function(){
       var alarmInterval = setInterval(function () {
           if (i % 2) {
             $('body').addClass('alarming');
+            $('.well').addClass('alarming_well');
             i++;
           } else {
             $('body').removeClass('alarming');
+            $('.well').removeClass('alarming_well');
             i++;
           }
           if (i >= 11) {
