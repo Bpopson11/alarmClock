@@ -3,12 +3,12 @@ $(document).ready(function(){
   var alarm = null;
   $('#alarm_reset').hide();
   $('#snooze_set').hide();
-  $('#snooze_time').show();
 
   // A trigger for submit of alarm form, sets a value for an alarm time
   $('#alarm').submit(function(event) {
     event.preventDefault();
     var alarm_time = $('#alarm_time').val();
+    console.log(alarm_time);
     var alarm_date = moment().format('MM-DD-YYYY');
     var alarm_datetime = alarm_date + ' ' + alarm_time;
     alarm = new Date(alarm_datetime);
@@ -25,6 +25,15 @@ $(document).ready(function(){
     $('#alarm_reset').hide();
   });
 
+  $('#snooze_set').submit(function(event) {
+    event.preventDefault();
+    alarm_string = moment().add(1, 'minutes').format('MM-DD-YYYY HH:mm');
+    console.log(alarm_string);
+    alarm = new Date(alarm_string);
+    $('#snooze_set').hide();
+    $('#alarm_set_time').text('Alarm has been set for ' + alarm.toLocaleTimeString() + '.');
+  });
+
   // refresh display and check alarm function
   var refreshAndCheck = function() {
     $('#time').text(moment().format("MMMM Do YYYY, h:mm:ss a"));
@@ -33,25 +42,9 @@ $(document).ready(function(){
       console.log("ALARM!");
       alarm = null;
       $('#alarm').show();
-      $('#alarm_set_time').hide();
-      $('#alarm_reset').hide();
       $('#snooze_set').show();
-      $('#snooze_time').show();
     }
   };
-
-  $('#snooze_set').submit(function(event) {
-    alarm = null;
-    var newTime = moment().add(5, 'minutes').format('LLL');
-      if (newTime && newTime <= moment()) {
-        console.log("ALARM AGAIN!");
-        $('#alarm').show();
-        $('#alarm_set_time').hide();
-        $('#alarm_reset').hide();
-        $('#snooze_set').show();
-        $('#snooze_time').show();
-      }
-  });
 
   // Keeping the page updated with now
   setInterval(refreshAndCheck, 100);

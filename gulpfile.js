@@ -62,7 +62,7 @@ gulp.task('minifyScripts', ['jsBrowserify'] , function() {
 });
 
 // build, based on production environment including bower
-gulp.task('build', ['clean'] , function() {
+gulp.task('build', function() {
   if (buildProduction) {
     gulp.start('minifyScripts');
   } else {
