@@ -8,7 +8,6 @@ $(document).ready(function(){
   $('#alarm').submit(function(event) {
     event.preventDefault();
     var alarm_time = $('#alarm_time').val();
-    console.log(alarm_time);
     var alarm_date = moment().format('MM-DD-YYYY');
     var alarm_datetime = alarm_date + ' ' + alarm_time;
     alarm = new Date(alarm_datetime);
@@ -27,8 +26,7 @@ $(document).ready(function(){
 
   $('#snooze_set').submit(function(event) {
     event.preventDefault();
-    alarm_string = moment().add(5, 'minutes').format('MM-DD-YYYY HH:mm');
-    console.log(alarm_string);
+    alarm_string = moment().add(1, 'minutes').format('MM-DD-YYYY HH:mm');
     alarm = new Date(alarm_string);
     $('#snooze_set').hide();
     $('#alarm_set_time').text('Alarm has been set for ' + alarm.toLocaleTimeString() + '.');
@@ -39,7 +37,19 @@ $(document).ready(function(){
     $('#time').text(moment().format("MMMM Do YYYY, h:mm:ss a"));
     // conditional to check for alarm
     if (alarm && alarm <= moment()) {
-      console.log("ALARM!");
+      var i = 0;
+      var alarmInterval = setInterval(function () {
+          if (i % 2) {
+            $('body').addClass('alarming');
+            i++;
+          } else {
+            $('body').removeClass('alarming');
+            i++;
+          }
+          if (i >= 11) {
+            clearInterval(alarmInterval);
+          }
+        }, 500);
       alarm = null;
       $('#alarm').show();
       $('#snooze_set').show();
