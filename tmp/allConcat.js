@@ -2,6 +2,8 @@ $(document).ready(function(){
 
   var alarm = null;
   $('#alarm_reset').hide();
+  $('#snooze_set').hide();
+  $('#snooze_time').show();
 
   // A trigger for submit of alarm form, sets a value for an alarm time
   $('#alarm').submit(function(event) {
@@ -16,7 +18,8 @@ $(document).ready(function(){
     $('#alarm_reset').show();
   });
 
-  $('#alarm_reset').submit(function() {
+  $('#alarm_reset').submit(function(event) {
+    event.preventDefault();
     alarm = null;
     $('#alarm').show();
     $('#alarm_reset').hide();
@@ -30,8 +33,25 @@ $(document).ready(function(){
       console.log("ALARM!");
       alarm = null;
       $('#alarm').show();
+      $('#alarm_set_time').hide();
+      $('#alarm_reset').hide();
+      $('#snooze_set').show();
+      $('#snooze_time').show();
     }
   };
+
+  $('#snooze_set').submit(function(event) {
+    alarm = null;
+    var newTime = moment().add(5, 'minutes').format('LLL');
+      if (newTime && newTime <= moment()) {
+        console.log("ALARM AGAIN!");
+        $('#alarm').show();
+        $('#alarm_set_time').hide();
+        $('#alarm_reset').hide();
+        $('#snooze_set').show();
+        $('#snooze_time').show();
+      }
+  });
 
   // Keeping the page updated with now
   setInterval(refreshAndCheck, 100);

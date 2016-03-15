@@ -28,7 +28,7 @@ var buildProduction = utilities.env.production;
 
 // clean files
 gulp.task('clean', function(){
-  // return del(['build', 'tmp']);
+  return del(['build', 'tmp']);
 });
 
 // linter
