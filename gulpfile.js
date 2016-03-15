@@ -4,15 +4,15 @@ var gulp = require('gulp');
 // Plugins for gulp
 var browserify = require('browserify');
 var concat = require('gulp-concat');
+var del = require('del');
 var jshint = require('gulp-jshint');
+var sass = require('gulp-sass');
 var source = require('vinyl-source-stream');
+var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 var utilities = require('gulp-util');
-var del = require('del');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var browserSync = require('browser-sync').create();
 // Second set of parantheses causes this to run right away, grabs all bower dependencies (including bootstrap)
+var browserSync = require('browser-sync').create();
 var lib = require('bower-files')({
   "overrides":{
     "bootstrap" : {
@@ -28,50 +28,55 @@ var lib = require('bower-files')({
 // Set build env from command line
 var buildProduction = utilities.env.production;
 
-// clean files
-gulp.task('clean', function(){
+// start server
+gulp.task('serve', ['buildStart'], function(){
+  gulp.start('jshint');
+  browserSync.init({
+    server: {
+      baseDir: "./",
+      index: "index.html"
+    }
+  });
+  gulp.watch('./js/*.js', ['jsBrowserify', 'jshint', 'reload']);
+  gulp.watch('./*.html', ['reload']);
+  gulp.watch('./scss/*.scss', ['cssBuild', 'reload']);
+  gulp.start('removeTmp');
+});
+/// end of serve task
+
+// Reloads the browser window
+gulp.task('reload', function() {
+  browserSync.reload();
+});
+
+// initial clean files
+gulp.task('initialClean', function(){
   return del(['build', 'tmp']);
 });
 
-// linter
-gulp.task('jshint', function(){
-  return gulp.src(['js/*.js'])
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
+// removed tmp file
+gulp.task('removeTmp', function(){
+  return del(['tmp']);
 });
 
-// concat all js files, puts in tmp
-gulp.task('concat', function() {
-  return gulp.src(['./js/*.js'])
-  .pipe(concat('allConcat.js'))
-  .pipe(gulp.dest('./tmp'));
+// catch all to build everything
+gulp.task('buildStart', ['initialClean'], function() {
+  gulp.start('buildAll');
 });
 
-// Takes concatenated JS and browserify's it
-// using a second arguement with gulp.task, we are passing in an array of task dependencies -> tasks to run first for this task to work
-gulp.task('jsBrowserify' , ['concat'] , function() {
-  return browserify({ entries: ['./tmp/allConcat.js']})
-  .bundle()
-  .pipe(source('app.js'))
-  .pipe(gulp.dest('./build/js'));
+gulp.task('buildAll', ['cssBuild', 'bowerBuild', 'jsBrowserify']);
+
+// builds css files
+gulp.task('cssBuild', function() {
+  return gulp.src('scss/*.scss')
+    .pipe(sourcemaps.init())
+    .pipe(sass())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./build/css'));
 });
 
-// minify
-gulp.task('minifyScripts', ['jsBrowserify'] , function() {
-  return gulp.src('./build/js/app.js')
-    .pipe(uglify())
-    .pipe(gulp.dest('./build/js'));
-});
-
-// build, based on production environment including bower
-gulp.task('build', function() {
-  if (buildProduction) {
-    gulp.start('minifyScripts');
-  } else {
-    gulp.start('jsBrowserify');
-  }
-  gulp.start('bower');
-});
+// will run JS and CSS for bower concurrently
+gulp.task('bowerBuild', ['bowerJS', 'bowerCSS']);
 
 // front end dependencies js gulp
 gulp.task('bowerJS', function () {
@@ -88,45 +93,25 @@ gulp.task('bowerCSS', function () {
     .pipe(gulp.dest('./build/css'));
 });
 
-//starts server for browser-sync and watches bower dependencies
-gulp.task('serve', function() {
-  browserSync.init({
-    server: {
-      baseDir: "./",
-      index: "index.html"
-    }
-  });
-  gulp.start(['build']);
-  gulp.start(['bowerBuild']);
-  gulp.watch(['js/*.js'], ['jsBuild']);
-  gulp.watch(['bower.json'], ['bowerBuild']);
+// Takes concatenated JS and browserify's it
+// using a second arguement with gulp.task, we are passing in an array of task dependencies -> tasks to run first for this task to work
+gulp.task('jsBrowserify' , ['concat'] , function() {
+  return browserify({ entries: ['./tmp/allConcat.js']})
+  .bundle()
+  .pipe(source('app.js'))
+  .pipe(gulp.dest('./build/js'));
 });
 
-//builds front end dependencies
-gulp.task('bowerBuild', ['bower'], function(){
-  browserSync.reload();
+// concat all js files, puts in tmp
+gulp.task('concat', function() {
+  return gulp.src(['./js/*.js'])
+  .pipe(concat('allConcat.js'))
+  .pipe(gulp.dest('./tmp'));
 });
 
-//a bit redundant for the build process (skips the 'if production' part)
-gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function(){
-  browserSync.reload();
+// linter
+gulp.task('jshint', function(){
+  return gulp.src(['js/*.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
 });
-
-// combines bowerJS and bowerCSS
-gulp.task('bower', ['bowerJS', 'bowerCSS']);
-
-gulp.task('cssBuild', function() {
-  return gulp.src('scss/*.scss')
-    .pipe(sourcemaps.init())
-    .pipe(sass())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./build/css'));
-});
-
-// gulp watch files for changes
-gulp.task('watch', function() {
-  gulp.watch('js/*.js', ['jshint' , 'build']);
-});
-
-// default action
-gulp.task('default', ['lint', 'build', 'watch']);
