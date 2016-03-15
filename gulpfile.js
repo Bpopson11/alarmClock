@@ -9,6 +9,18 @@ var source = require('vinyl-source-stream');
 var uglify = require('gulp-uglify');
 var utilities = require('gulp-util');
 var del = require('del');
+    // Second set of parantheses causes this to run right away, grabs all bower dependencies (including bootstrap)
+    var lib = require('bower-files')({
+      "overrides":{
+        "bootstrap" : {
+          "main": [
+            "less/bootstrap.less",
+            "dist/css/bootstrap.css",
+            "dist/js/bootstrap.js"
+          ]
+        }
+      }
+    });
 
 // Set build env from command line
 var buildProduction = utilities.env.production;
@@ -48,14 +60,33 @@ gulp.task('minifyScripts', ['jsBrowserify'] , function() {
     .pipe(gulp.dest('./build/js'));
 });
 
-// build, based on production environment
+// build, based on production environment including bower
 gulp.task('build', ['clean'] , function() {
   if (buildProduction) {
     gulp.start('minifyScripts');
   } else {
     gulp.start('jsBrowserify');
   }
+  gulp.start('bower');
 });
+
+// front end dependencies js gulp
+gulp.task('bowerJS', function () {
+  return gulp.src(lib.ext('js').files)
+    .pipe(concat('vendor.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('./build/js'));
+});
+
+// front end dependencies css
+gulp.task('bowerCSS', function () {
+  return gulp.src(lib.ext('css').files)
+    .pipe(concat('vendor.css'))
+    .pipe(gulp.dest('./build/css'));
+});
+
+// combines bowerJS and bowerCSS
+gulp.task('bower', ['bowerJS', 'bowerCSS']);
 
 // gulp watch files for changes
 gulp.task('watch', function() {
