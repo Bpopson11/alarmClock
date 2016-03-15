@@ -9,7 +9,12 @@ $(document).ready(function(){
     var alarm_date = moment().format('MM-DD-YYYY');
     var alarm_datetime = alarm_date + ' ' + alarm_time;
     alarm = new Date(alarm_datetime);
+    $('#alarm').hide();
+    // populate the time to display for user what alarm time they set
+    $('#alarm_set_time').text('Alarm has been set for ' + alarm.toLocaleTimeString() + '.');
   });
+
+
 
   // refresh display and check alarm function
   var refreshAndCheck = function() {
@@ -18,6 +23,7 @@ $(document).ready(function(){
     if (alarm && alarm <= moment()) {
       console.log("ALARM!");
       alarm = null;
+      $('#alarm').show();
     }
   };
 
