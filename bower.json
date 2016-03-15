@@ -1,13 +1,13 @@
 {
-  "name": "ping-pong",
+  "name": "alarmclock",
   "description": "",
   "main": "index.js",
   "authors": [
-    "Joe Karasek <joseph.karasek@gmail.com>"
+    "Joe and Bri"
   ],
   "license": "ISC",
+  "homepage": "https://github.com/joekarasek/node_template",
   "moduleType": [],
-  "homepage": "",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "jquery": "^2.2.1",
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "moment": "^2.12.0"
   }
 }
