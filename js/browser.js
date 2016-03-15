@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
   var alarm = null;
+  $('#alarm_reset').hide();
 
   // A trigger for submit of alarm form, sets a value for an alarm time
   $('#alarm').submit(function(event) {
@@ -12,9 +13,14 @@ $(document).ready(function(){
     $('#alarm').hide();
     // populate the time to display for user what alarm time they set
     $('#alarm_set_time').text('Alarm has been set for ' + alarm.toLocaleTimeString() + '.');
+    $('#alarm_reset').show();
   });
 
-
+  $('#alarm_reset').submit(function() {
+    alarm = null;
+    $('#alarm').show();
+    $('#alarm_reset').hide();
+  });
 
   // refresh display and check alarm function
   var refreshAndCheck = function() {
