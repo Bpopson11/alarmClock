@@ -2,27 +2,42 @@
 <html>
   <head>
     <link rel="stylesheet" href="build/css/vendor.css">
+    <link rel="stylesheet" href="css/styles.css">
     <script src="build/js/vendor.min.js"></script>
     <script type="text/javascript" src="build/js/app.js"></script>
     <title>Alarm Clock</title>
   </head>
   <body>
     <div class="container">
-      <h3>Well look at the time! </h3>
-      <h3 id="time"></h3>
-      <form id="alarm">
-        <label for="alarm">Enter an alarm time:</label>
-        <input id="alarm_time" type="time">
-        <button type="submit">Submit</button>
-      </form>
-      <form id="alarm_reset">
-        <h4 id="alarm_set_time"></h4>
-        <button type="submit">Reset</button>
-      </form>
-      <form id="snooze_set">
-        <h4 id="snooze_time"></h4>
-        <button type="submit">Snooooooooooze</button>
-      </form>
+      <div class="row">
+        <div class="col-sm-6">
+          <h3>Well, look at the time! </h3>
+          <div class="well">
+            <h2 id="time"></h2>
+          </div>
+          <div class="well">
+            <form id="alarm">
+              <label for="alarm">Enter an alarm time:</label>
+              <input id="alarm_time" type="time">
+              <button type="submit">Submit</button>
+            </form>
+            <form id="alarm_reset">
+              <h4 id="alarm_set_time"></h4>
+              <button type="submit">Reset</button>
+            </form>
+            <form id="snooze_set">
+              <h4 id="snooze_time"></h4>
+              <button type="submit">Snooooooooooze</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <h3>Well, look at the weather! </h3>
+          <div class="well">
+            <h2>Weather App</h2>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

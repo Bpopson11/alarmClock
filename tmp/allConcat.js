@@ -27,7 +27,7 @@ $(document).ready(function(){
 
   $('#snooze_set').submit(function(event) {
     event.preventDefault();
-    alarm_string = moment().add(1, 'minutes').format('MM-DD-YYYY HH:mm');
+    alarm_string = moment().add(5, 'minutes').format('MM-DD-YYYY HH:mm');
     console.log(alarm_string);
     alarm = new Date(alarm_string);
     $('#snooze_set').hide();
