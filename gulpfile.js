@@ -9,6 +9,8 @@ var source = require('vinyl-source-stream');
 var uglify = require('gulp-uglify');
 var utilities = require('gulp-util');
 var del = require('del');
+var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require('browser-sync').create();
 // Second set of parantheses causes this to run right away, grabs all bower dependencies (including bootstrap)
 var lib = require('bower-files')({
@@ -112,6 +114,14 @@ gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function(){
 
 // combines bowerJS and bowerCSS
 gulp.task('bower', ['bowerJS', 'bowerCSS']);
+
+gulp.task('cssBuild', function() {
+  return gulp.src('scss/*.scss')
+    .pipe(sourcemaps.init())
+    .pipe(sass())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./build/css'));
+});
 
 // gulp watch files for changes
 gulp.task('watch', function() {
