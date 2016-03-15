@@ -28,7 +28,7 @@ var buildProduction = utilities.env.production;
 
 // clean files
 gulp.task('clean', function(){
-  return del(['build', 'tmp']);
+  // return del(['build', 'tmp']);
 });
 
 // linter
@@ -94,7 +94,8 @@ gulp.task('serve', function() {
       index: "index.html"
     }
   });
-  gulp.start(['bowerBuild', 'build']);
+  gulp.start(['build']);
+  gulp.start(['bowerBuild']);
   gulp.watch(['js/*.js'], ['jsBuild']);
   gulp.watch(['bower.json'], ['bowerBuild']);
 });
